@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مسابقة منتجع يوم العائلة</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .logo { text-align: center; margin-bottom: 30px; }
+    .logo svg { width: 60px; height: 60px; }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 30px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+      outline: none;
+      font-family: inherit;
+    }
+
+    input[type="text"] { direction: ltr; font-family: monospace; }
+    input:focus { border-color: #833ab4; }
+
+    .post-id-row { display: flex; gap: 8px; align-items: stretch; }
+    .post-id-row input { flex: 1; margin: 0; }
+
+    .btn-browse {
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #833ab4, #c13584);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-browse:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(131,58,180,0.4); }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .btn:active:not(:disabled) { transform: translateY(0); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-fetch { background: linear-gradient(135deg, #833ab4, #c13584); color: white; margin-bottom: 8px; }
+    .btn-draw  { background: linear-gradient(135deg, #fd1d1d, #fcb045); color: white; font-size: 18px; padding: 18px; letter-spacing: 1px; }
+
+    /* Winner count row */
+    .winner-count-row {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #f8f0ff, #fff5f5);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      border: 2px solid #e8d5f8;
+    }
+
+    .winner-count-row.visible { display: flex; }
+
+    .winner-count-row label {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .winner-count-row input[type="number"] {
+      width: 80px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 8px;
+      border-color: #c0a0e0;
+    }
+
+    .winner-count-hint { font-size: 12px; color: #aaa; }
+
+    /* ── Posts Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.visible { display: flex; }
+
+    .modal {
+      background: white;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #f8f0ff, #fff5f5);
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #999;
+      line-height: 1;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover { background: #f0e8ff; color: #833ab4; }
+    .modal-body { overflow-y: auto; padding: 16px; flex: 1; }
+
+    .modal-status { text-align: center; padding: 40px 20px; color: #aaa; font-size: 14px; }
+
+    .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+
+    .post-card {
+      border: 2px solid #eee;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      background: #fafafa;
+    }
+
+    .post-card:hover { border-color: #833ab4; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(131,58,180,0.2); }
+    .post-card.selected { border-color: #833ab4; box-shadow: 0 0 0 3px rgba(131,58,180,0.3); }
+
+    .post-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      background: linear-gradient(135deg, #f0e8ff, #ffe8f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #ccc;
+    }
+
+    .post-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .post-info { padding: 10px; }
+
+    .post-caption {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 34px;
+    }
+
+    .post-date { font-size: 11px; color: #bbb; margin-top: 4px; direction: ltr; }
+
+    .post-type-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #f0e8ff;
+      color: #833ab4;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .modal-footer { padding: 16px 24px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+
+    .btn-select {
+      flex: 1;
+      padding: 12px;
+      background: linear-gradient(135deg, #833ab4, #c13584);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-select:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-select:not(:disabled):hover { opacity: 0.9; }
+
+    .btn-cancel {
+      padding: 12px 20px;
+      background: #f5f5f5;
+      color: #666;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-cancel:hover { background: #eee; }
+
+    /* Stats */
+    .stats {
+      display: none;
+      background: linear-gradient(135deg, #f8f0ff, #fff5f5);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      border: 2px solid #e8d5f8;
+    }
+
+    .stats.visible { display: block; }
+
+    .stats-number {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats-label { color: #666; font-size: 14px; margin-top: 4px; }
+
+    /* Participants */
+    .participants {
+      display: none;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #eee;
+    }
+
+    .participants.visible { display: block; }
+
+    .participant-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #444;
+      transition: background 0.2s;
+    }
+
+    .participant-item:hover { background: #f0e8ff; }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Drum roll */
+    .drum-roll {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 16px;
+      margin: 20px 0;
+    }
+
+    .drum-roll.visible { display: block; }
+
+    .rolling-name {
+      font-size: 26px;
+      font-weight: 900;
+      color: #fcb045;
+      letter-spacing: 2px;
+      animation: flicker 0.1s infinite;
+      min-height: 40px;
+    }
+
+    @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    .drum-label { color: #aaa; font-size: 13px; margin-bottom: 12px; }
+
+    /* Status */
+    .status { text-align: center; padding: 10px; border-radius: 10px; font-size: 13px; margin-top: 12px; display: none; }
+    .status.visible { display: block; }
+    .status.error   { background: #ffe0e0; color: #c00; }
+    .status.info    { background: #e8f4fd; color: #0077b6; }
+    .status.success { background: #e0f8e8; color: #0a7c2c; }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider { height: 1px; background: #eee; margin: 24px 0; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+
+    .tab {
+      flex: 1;
+      padding: 8px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #888;
+      transition: all 0.2s;
+    }
+
+    .tab.active { border-color: #833ab4; background: linear-gradient(135deg, #f8f0ff, #fff5f5); color: #833ab4; }
+
+    .count-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #444;
+      transition: background 0.2s;
+    }
+
+    .count-row:hover { background: #f0e8ff; }
+    .count-row .rank { font-size: 11px; color: #bbb; width: 20px; text-align: center; flex-shrink: 0; }
+
+    .count-row .name-part { display: flex; align-items: center; gap: 8px; flex: 1; }
+
+    .count-badge {
+      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Confetti */
+    .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+
+    .confetti-piece { position: absolute; top: -20px; animation: confettiFall linear forwards; }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Scrollbars */
+    .participants::-webkit-scrollbar, .modal-body::-webkit-scrollbar { width: 5px; }
+    .participants::-webkit-scrollbar-track, .modal-body::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 10px; }
+    .participants::-webkit-scrollbar-thumb, .modal-body::-webkit-scrollbar-thumb { background: #c0a0e0; border-radius: 10px; }
+
+    /* ══════════════════════════════════════════
+       🎉 صفحة الفائزين الاحتفالية
+    ══════════════════════════════════════════ */
+    .celebration-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #1a0533 100%);
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .celebration-page.visible { display: block; }
+
+    .celebration-header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .celebration-title {
+      font-size: 36px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fcb045, #fd1d1d, #833ab4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .celebration-subtitle {
+      color: rgba(255,255,255,0.5);
+      font-size: 15px;
+    }
+
+    .winners-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+
+    .winner-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 36px 32px;
+      text-align: center;
+      min-width: 220px;
+      max-width: 260px;
+      flex: 1;
+      animation: fadeInUp 0.8s ease both;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .winner-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(131,58,180,0.15), rgba(253,29,29,0.1));
+      pointer-events: none;
+    }
+
+    .winner-card .place-badge {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .winner-card .crown { font-size: 52px; margin-bottom: 10px; display: block; }
+    .winner-card.place-1 .crown { animation: bounce 0.6s ease infinite alternate; }
+    .winner-card.place-2 .crown { animation: bounce 0.6s ease 0.1s infinite alternate; }
+    .winner-card.place-3 .crown { animation: bounce 0.6s ease 0.2s infinite alternate; }
+
+    @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+    .winner-card .w-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: white;
+      animation: glow 1.5s ease-in-out infinite alternate;
+      word-break: break-all;
+      margin-bottom: 6px;
+    }
+
+    .winner-card .w-handle { color: rgba(255,255,255,0.45); font-size: 14px; direction: ltr; }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px rgba(252,176,69,0.4); }
+      to   { text-shadow: 0 0 30px rgba(252,176,69,0.9), 0 0 50px rgba(253,29,29,0.4); }
+    }
+
+    /* تلوين أول 3 فائزين */
+    .winner-card.place-1 { border-color: rgba(252,176,69,0.5); }
+    .winner-card.place-1 .crown-emoji { font-size: 52px; }
+    .winner-card.place-2 { border-color: rgba(192,192,192,0.5); }
+    .winner-card.place-3 { border-color: rgba(205,127,50,0.5); }
+
+    .celebration-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+
+    .btn-celebration {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-celebration:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+    .btn-close-celebration {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-export-pdf {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      color: #0a2a1a;
+    }
+
+    .btn-draw-again {
+      background: linear-gradient(135deg, #fd1d1d, #fcb045);
+      color: white;
+    }
+
+    /* ══════════════════════════════════════════
+       📱 Responsive — الجوال
+    ══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+
+      body { padding: 12px; align-items: flex-start; }
+
+      .container {
+        padding: 24px 18px;
+        border-radius: 20px;
+      }
+
+      .logo svg { width: 48px; height: 48px; }
+
+      h1 { font-size: 20px; margin-bottom: 20px; }
+
+      /* Post ID row — يصير عمودين في الجوال */
+      .post-id-row { flex-direction: column; gap: 8px; }
+      .post-id-row input { width: 100%; }
+      .btn-browse { width: 100%; text-align: center; }
+
+      /* شرط المشاركة — عمودي */
+      .form-group div[style*="display:flex"] {
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+
+      .btn { font-size: 15px; padding: 13px; }
+      .btn-draw { font-size: 16px; padding: 15px; }
+
+      /* الإحصائيات */
+      .stats { padding: 16px 12px; }
+      .stats-number { font-size: 36px; }
+      .stats > div { gap: 20px !important; }
+
+      /* عدد الفائزين */
+      .winner-count-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+      .winner-count-row input[type="number"] { width: 70px; }
+
+      /* قائمة المشاركين */
+      .participants { max-height: 180px; padding: 10px; }
+      .tab { font-size: 12px; padding: 7px; }
+
+      /* الصفحة الاحتفالية */
+      .celebration-page { padding: 24px 14px; }
+      .celebration-title { font-size: 24px; }
+
+      .winners-grid { gap: 14px; }
+      .winner-card { padding: 24px 18px; min-width: unset; max-width: 100%; flex: unset; width: 100%; }
+      .winner-card .crown { font-size: 38px; }
+      .winner-card .w-name { font-size: 18px; }
+
+      .celebration-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 0 4px;
+      }
+
+      .btn-celebration { padding: 13px 16px; font-size: 14px; text-align: center; }
+
+      /* المودال */
+      .modal { border-radius: 16px; max-height: 90vh; }
+      .modal-header { padding: 14px 16px; }
+      .posts-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+      .modal-footer { padding: 12px 16px; }
+
+      /* drum roll */
+      .drum-roll { padding: 20px 14px; }
+      .rolling-name { font-size: 20px; }
+    }
+
+    /* شاشات متوسطة */
+    @media (max-width: 360px) {
+      h1 { font-size: 17px; }
+      .container { padding: 18px 14px; }
+      .posts-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ══════════════════════════════════════════
+       🖨️ PDF Print Styles
+    ══════════════════════════════════════════ */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      body { background: white !important; }
+
+      .pdf-page {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        direction: rtl;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px;
+      }
+
+      .pdf-header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #833ab4; padding-bottom: 20px; }
+      .pdf-header h1 { font-size: 28px; color: #833ab4; margin-bottom: 8px; }
+      .pdf-header .pdf-date { color: #888; font-size: 14px; }
+
+      .pdf-winner-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+      }
+
+      .pdf-winner-row.rank-1 { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 2px solid #fcb045; }
+      .pdf-winner-row.rank-2 { background: linear-gradient(135deg, #f5f5f5, #ebebeb); border: 2px solid #aaa; }
+      .pdf-winner-row.rank-3 { background: linear-gradient(135deg, #fdf0e8, #fae0cc); border: 2px solid #cd7f32; }
+      .pdf-winner-row.rank-other { background: #f8f0ff; border: 2px solid #e0c8f8; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- ══════════════ 📸 قالب الستوري (مخفي للتصدير) ══════════════ -->
+<div id="storyTemplate" style="
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 400px;
+  height: 711px;
+  background: linear-gradient(160deg, #0f0c29 0%, #302b63 45%, #1a0533 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 30px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  direction: rtl;
+  overflow: hidden;
+">
+  <!-- خلفية نجوم -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;" id="storyStars"></div>
+
+  <!-- شعار وعنوان -->
+  <div style="text-align:center; margin-bottom:28px; z-index:1;">
+    <div style="font-size:48px; margin-bottom:8px;">🏆</div>
+    <div style="font-size:20px; font-weight:900; color:#fcb045; letter-spacing:1px; margin-bottom:4px;">
+      🎊 نتائج المسابقة 🎊
+    </div>
+    <div id="storyContestName" style="font-size:14px; color:rgba(255,255,255,0.55);">
+      مسابقة منتجع يوم العائلة
+    </div>
+  </div>
+
+  <!-- بطاقات الفائزين -->
+  <div id="storyWinnersContainer" style="width:100%; z-index:1; display:flex; flex-direction:column; gap:12px;"></div>
+
+  <!-- تذييل -->
+  <div style="position:absolute; bottom:24px; text-align:center; z-index:1;">
+    <div style="font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:1px;" id="storyDate"></div>
+  </div>
+</div>
+
+<!-- ══════════════ 🎉 صفحة الفائزين الاحتفالية ══════════════ -->
+<div class="celebration-page" id="celebrationPage">
+  <div class="celebration-header">
+    <div class="celebration-title">🎊 نتائج المسابقة 🎊</div>
+    <div class="celebration-subtitle" id="celebrationSubtitle">مسابقة منتجع يوم العائلة</div>
+  </div>
+
+  <div class="winners-grid" id="winnersGrid"></div>
+
+  <div class="celebration-actions">
+    <button class="btn-celebration btn-export-pdf" id="exportImgBtn" onclick="exportStoryImage()">📸 تصدير صورة ستوري</button>
+    <button class="btn-celebration btn-draw-again" onclick="closeCelebration(); setTimeout(startDraw, 300)">🔄 سحب مرة أخرى</button>
+    <button class="btn-celebration btn-close-celebration" onclick="closeCelebration()">✕ إغلاق</button>
+  </div>
+</div>
+
+<!-- ══════════════ Posts Picker Modal ══════════════ -->
+<div class="modal-overlay" id="postsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>📸 اختر البوست</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="modal-status" id="modalStatus">جاري تحميل بوستاتك...</div>
+      <div class="posts-grid" id="postsGrid" style="display:none"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-select" id="btnSelectPost" disabled onclick="selectPost()">اختر هذا البوست ✓</button>
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ Main App ══════════════ -->
+<div class="container">
+
+  <div class="logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#fcb045"/>
+          <stop offset="50%" style="stop-color:#fd1d1d"/>
+          <stop offset="100%" style="stop-color:#833ab4"/>
+        </linearGradient>
+      </defs>
+      <rect width="100" height="100" rx="22" fill="url(#ig)"/>
+      <rect x="20" y="20" width="60" height="60" rx="14" fill="none" stroke="white" stroke-width="6"/>
+      <circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="6"/>
+      <circle cx="71" cy="29" r="4" fill="white"/>
+    </svg>
+  </div>
+
+  <h1>مسابقة منتجع يوم العائلة</h1>
+
+  <div class="form-group">
+    <label>Post ID</label>
+    <div class="post-id-row">
+      <input type="text" id="postId" placeholder="حدد بوست أو أدخل ID يدوياً" />
+      <button class="btn-browse" onclick="openPostsPicker()">📋 تصفح بوستاتي</button>
+    </div>
+  </div>
+
+  <div class="form-group" style="margin-top:8px;">
+    <label>شرط المشاركة</label>
+    <div style="display:flex; gap:12px; margin-top:6px;">
+      <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-weight:normal;">
+        <input type="radio" name="mentionCondition" id="conditionNone" value="0" checked
+          style="width:18px; height:18px; cursor:pointer;" />
+        بدون شرط — الكل يشارك
+      </label>
+      <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-weight:normal;">
+        <input type="radio" name="mentionCondition" id="conditionTwo" value="3"
+          style="width:18px; height:18px; cursor:pointer;" />
+        منشن 3 أشخاص أو أكثر
+      </label>
+    </div>
+  </div>
+
+  <!-- قوانين السحب -->
+  <div style="background:#f8f0ff; border-radius:14px; padding:14px 18px; margin-top:12px;
+              border-right:4px solid #833ab4; font-size:13px; color:#555; line-height:1.9;">
+    <div style="font-weight:700; color:#833ab4; margin-bottom:6px;">📋 قوانين السحب</div>
+    <div>• كل مشارك يدخل السحب <strong>مرة واحدة فقط</strong> بغض النظر عن عدد تعليقاته</div>
+    <div>• التعليقات المكررة من نفس الشخص لا تُحتسب — يتم تصفيتها تلقائياً</div>
+    <div>• السحب يتم بشكل عشوائي وشفاف من بين المشاركين المؤهلين</div>
+  </div>
+
+  <button class="btn btn-fetch" id="fetchBtn" onclick="fetchComments()">
+    جلب التعليقات
+  </button>
+
+  <div class="status" id="statusMsg"></div>
+
+  <div class="stats" id="stats">
+    <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap;">
+      <div>
+        <div class="stats-number" id="participantCount">0</div>
+        <div class="stats-label">مشارك فريد 👤</div>
+      </div>
+      <div>
+        <div class="stats-number" id="totalCommentCount">0</div>
+        <div class="stats-label">إجمالي التعليقات 💬</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="participants" id="participantsList">
+    <div class="tabs">
+      <button class="tab active" id="tab1" onclick="switchTab(1)">المشاركون 👤</button>
+      <button class="tab" id="tab2" onclick="switchTab(2)">عدد التعليقات 💬</button>
+    </div>
+    <div id="participantsItems"></div>
+    <div id="commentsCountItems" style="display:none"></div>
+  </div>
+
+  <div class="divider" id="divider" style="display:none"></div>
+
+  <!-- عدد الفائزين -->
+  <div class="winner-count-row" id="winnerCountRow">
+    <label>🏆 عدد الفائزين:</label>
+    <input type="number" id="winnerCount" value="1" min="1" max="50" />
+    <span class="winner-count-hint">يتم سحبهم عشوائياً</span>
+  </div>
+
+  <button class="btn btn-draw" id="drawBtn" style="display:none" onclick="startDraw()">
+    🎰 سحب الفائزين
+  </button>
+
+  <div class="drum-roll" id="drumRoll">
+    <div class="drum-label">جاري السحب...</div>
+    <div class="rolling-name" id="rollingName">---</div>
+  </div>
+
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  //  ⚙️ الإعدادات
+  // ─────────────────────────────────────────────
+  const ACCESS_TOKEN = 'EAAUoBeSqM64BQxR5JurEoLPZAvwyaM5Y7IzIkYDUyMXzUhvPixAxDP4NsDdWFfWZAmp60QZAfr0mZAt1BiBj3ahIywxB1PCytIb6hV3JRA6qlTZAOSIT85UxPjs4u4X9sGv0ujmF2ZBtaJu0RQcs4IbG2LZASFjh7rsFePrRU89ugARaZBXYLmQLWofvbuPkqt50';
+
+  // ─────────────────────────────────────────────
+  //  State
+  // ─────────────────────────────────────────────
+  let participants   = [];
+  let commentCounts  = {};
+  let selectedPostId = null;
+  let allPosts       = [];
+  let lastWinners    = [];
+
+  // ─────────────────────────────────────────────
+  //  Posts Picker
+  // ─────────────────────────────────────────────
+  async function openPostsPicker() {
+    const token = ACCESS_TOKEN;
+    selectedPostId = null;
+    document.getElementById('btnSelectPost').disabled = true;
+    document.getElementById('postsGrid').style.display = 'none';
+    document.getElementById('modalStatus').textContent = 'جاري تحميل بوستاتك...';
+    document.getElementById('modalStatus').style.display = 'block';
+    document.getElementById('postsModal').classList.add('visible');
+
+    try {
+      allPosts = await loadUserPosts(token);
+      if (allPosts.length === 0) {
+        document.getElementById('modalStatus').textContent = 'لم يتم العثور على أي بوستات.';
+        return;
+      }
+      renderPostsGrid(allPosts);
+      document.getElementById('modalStatus').style.display = 'none';
+      document.getElementById('postsGrid').style.display = 'grid';
+    } catch (err) {
+      document.getElementById('modalStatus').textContent = `خطأ: ${err.message}`;
+    }
+  }
+
+  async function loadUserPosts(token) {
+    const base = 'https://graph.facebook.com/v19.0';
+    const enc  = encodeURIComponent(token);
+
+    const igRes  = await fetch(`${base}/me/media?fields=id,caption,timestamp,media_type,thumbnail_url,media_url&limit=50&access_token=${enc}`);
+    const igData = await igRes.json();
+    if (!igData.error && igData.data?.length) return igData.data;
+
+    const upRes  = await fetch(`${base}/me/posts?fields=id,message,created_time,full_picture&limit=50&access_token=${enc}`);
+    const upData = await upRes.json();
+    if (!upData.error && upData.data?.length) return normalizeFbPosts(upData.data);
+
+    const feedRes  = await fetch(`${base}/me/feed?fields=id,message,created_time,full_picture&limit=50&access_token=${enc}`);
+    const feedData = await feedRes.json();
+    if (!feedData.error && feedData.data?.length) return normalizeFbPosts(feedData.data);
+
+    const pagesRes  = await fetch(`${base}/me/accounts?access_token=${enc}`);
+    const pagesData = await pagesRes.json();
+    if (pagesData.error) throw new Error(pagesData.error.message);
+    if (!pagesData.data?.length) throw new Error('لم يتم العثور على صفحات مرتبطة بهذا التوكن');
+
+    for (const page of pagesData.data) {
+      const pageToken = page.access_token || token;
+      const pEnc = encodeURIComponent(pageToken);
+
+      const igPageRes  = await fetch(`${base}/${page.id}?fields=instagram_business_account&access_token=${pEnc}`);
+      const igPageData = await igPageRes.json();
+
+      if (igPageData.instagram_business_account?.id) {
+        const igId = igPageData.instagram_business_account.id;
+        const igMRes  = await fetch(`${base}/${igId}/media?fields=id,caption,timestamp,media_type,thumbnail_url,media_url&limit=50&access_token=${pEnc}`);
+        const igMData = await igMRes.json();
+        if (!igMData.error && igMData.data?.length) return igMData.data;
+      }
+
+      const pgRes  = await fetch(`${base}/${page.id}/posts?fields=id,message,created_time,full_picture&limit=50&access_token=${pEnc}`);
+      const pgData = await pgRes.json();
+      if (!pgData.error && pgData.data?.length) return normalizeFbPosts(pgData.data);
+    }
+
+    throw new Error('لم يتم العثور على أي بوستات. تأكد من صلاحيات التوكن');
+  }
+
+  function normalizeFbPosts(posts) {
+    return posts.map(p => ({
+      id: p.id, caption: p.message || '',
+      timestamp: p.created_time, media_type: 'POST',
+      media_url: p.full_picture || ''
+    }));
+  }
+
+  function renderPostsGrid(posts) {
+    const grid = document.getElementById('postsGrid');
+    grid.innerHTML = '';
+    posts.forEach(post => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      card.dataset.id = post.id;
+      const thumbSrc  = post.thumbnail_url || post.media_url || '';
+      const caption   = post.caption || '(بدون نص)';
+      const date      = new Date(post.timestamp).toLocaleDateString('ar-SA');
+      const typeMap   = { IMAGE: 'صورة', VIDEO: 'فيديو', CAROUSEL_ALBUM: 'ألبوم', POST: 'منشور' };
+      const typeLabel = typeMap[post.media_type] || 'منشور';
+
+      card.innerHTML = `
+        <div class="post-thumb">
+          ${thumbSrc ? `<img src="${thumbSrc}" alt="post" onerror="this.parentElement.innerHTML='📷'" />` : '📷'}
+        </div>
+        <div class="post-info">
+          <div class="post-caption">${caption}</div>
+          <div class="post-date">${date}</div>
+          <span class="post-type-badge">${typeLabel}</span>
+        </div>`;
+
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.post-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedPostId = post.id;
+        document.getElementById('btnSelectPost').disabled = false;
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function selectPost() {
+    if (!selectedPostId) return;
+    document.getElementById('postId').value = selectedPostId;
+    closeModal();
+    showStatus(`تم اختيار البوست: ${selectedPostId}`, 'success');
+  }
+
+  function closeModal() { document.getElementById('postsModal').classList.remove('visible'); }
+
+  document.getElementById('postsModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ─────────────────────────────────────────────
+  //  Fetch Comments
+  // ─────────────────────────────────────────────
+  async function fetchComments() {
+    const token  = ACCESS_TOKEN;
+    const postId = document.getElementById('postId').value.trim();
+
+    if (!postId) { showStatus('الرجاء إدخال Post ID', 'error'); return; }
+
+    const btn = document.getElementById('fetchBtn');
+    btn.disabled = true;
+    btn.innerHTML = 'جاري الجلب... <span class="spinner"></span>';
+
+    participants  = [];
+    commentCounts = {};
+    document.getElementById('drumRoll').classList.remove('visible');
+    showStatus('جاري جلب التعليقات من انستقرام...', 'info');
+
+    try {
+      const totalComments = await fetchAllComments(postId, token);
+      showStats(totalComments);
+      showParticipants();
+
+      if (participants.length === 0) {
+        showStatus('لم يتم العثور على أي تعليقات في هذا البوست.', 'error');
+      } else {
+        const minM = parseInt(document.querySelector('input[name="mentionCondition"]:checked').value) || 0;
+        const conditionText = minM > 0 ? ` (منشن ${minM} أشخاص أو أكثر)` : '';
+        showStatus(`✅ تم جلب ${totalComments} تعليق — ${participants.length} مشارك فريد${conditionText}`, 'success');
+        document.getElementById('divider').style.display  = 'block';
+        document.getElementById('drawBtn').style.display  = 'block';
+        document.getElementById('winnerCountRow').classList.add('visible');
+      }
+    } catch (err) {
+      showStatus(`خطأ: ${err.message}`, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'جلب التعليقات';
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  //  Comment Helpers
+  // ─────────────────────────────────────────────
+  function countMentions(comment) {
+    if (Array.isArray(comment.message_tags) && comment.message_tags.length > 0)
+      return comment.message_tags.length;
+    if (comment.message_tags && typeof comment.message_tags === 'object') {
+      const total = Object.values(comment.message_tags)
+        .reduce((s, v) => s + (Array.isArray(v) ? v.length : 1), 0);
+      if (total > 0) return total;
+    }
+    const txt = comment.message || comment.text || '';
+    return (txt.match(/@\S+/g) || []).length;
+  }
+
+  function processComment(comment, userBest) {
+    if (!comment.from) return;
+    const uid     = comment.from.id;
+    const name    = comment.from.name || comment.from.username || 'مجهول';
+    const mentions = countMentions(comment);
+    if (!userBest[uid] || mentions > userBest[uid].mentions)
+      userBest[uid] = { name, mentions };
+    if (!commentCounts[uid]) commentCounts[uid] = { username: name, count: 0 };
+    commentCounts[uid].count++;
+  }
+
+  async function fetchAllComments(postId, token) {
+    const minMentions = parseInt(document.querySelector('input[name="mentionCondition"]:checked').value) || 0;
+    const userBest    = {};
+    const enc         = encodeURIComponent(token);
+    const base        = 'https://graph.facebook.com/v19.0';
+    const fields      = 'from,message,text,message_tags,replies{from,message,text,message_tags}';
+    let totalComments = 0;
+
+    let url = `${base}/${postId}/comments?fields=${fields}&limit=100&access_token=${enc}`;
+    while (url) {
+      showStatus(`جاري الجلب... ${totalComments} تعليق حتى الآن`, 'info');
+      const res  = await fetch(url);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+
+      for (const comment of (data.data || [])) {
+        totalComments++;
+        processComment(comment, userBest);
+
+        for (const reply of (comment.replies?.data || [])) {
+          totalComments++;
+          processComment(reply, userBest);
+        }
+
+        let nextReplies = comment.replies?.paging?.next || null;
+        while (nextReplies) {
+          const rRes  = await fetch(nextReplies);
+          const rData = await rRes.json();
+          for (const reply of (rData.data || [])) {
+            totalComments++;
+            processComment(reply, userBest);
+          }
+          nextReplies = rData.paging?.next || null;
+        }
+      }
+      url = data.paging?.next || null;
+    }
+
+    for (const [uid, info] of Object.entries(userBest)) {
+      if (info.mentions >= minMentions)
+        participants.push({ id: uid, username: info.name });
+    }
+
+    return totalComments;
+  }
+
+  // ─────────────────────────────────────────────
+  //  Draw Logic — يدعم أكثر من فائز
+  // ─────────────────────────────────────────────
+  function startDraw() {
+    if (participants.length === 0) return;
+
+    const count    = Math.min(parseInt(document.getElementById('winnerCount').value) || 1, participants.length);
+    const pool     = [...participants];
+    lastWinners    = [];
+
+    // اختيار عشوائي بدون تكرار
+    for (let i = 0; i < count; i++) {
+      const idx = Math.floor(Math.random() * pool.length);
+      lastWinners.push(pool[idx]);
+      pool.splice(idx, 1);
+    }
+
+    document.getElementById('drawBtn').disabled = true;
+    document.getElementById('drumRoll').classList.add('visible');
+
+    const rolling  = document.getElementById('rollingName');
+    let elapsed    = 0;
+    let interval   = 80;
+    const duration = 3000;
+
+    const roll = setInterval(() => {
+      const random = participants[Math.floor(Math.random() * participants.length)];
+      rolling.textContent = random.username;
+      elapsed += interval;
+
+      if (elapsed > duration * 0.6)  interval = 160;
+      if (elapsed > duration * 0.85) interval = 320;
+
+      if (elapsed >= duration) {
+        clearInterval(roll);
+        rolling.textContent = lastWinners[0].username;
+        setTimeout(() => {
+          document.getElementById('drumRoll').classList.remove('visible');
+          document.getElementById('drawBtn').disabled = false;
+          showCelebrationPage();
+          launchConfetti();
+        }, 600);
+      }
+    }, interval);
+  }
+
+  // ─────────────────────────────────────────────
+  //  🎉 صفحة الفائزين الاحتفالية
+  // ─────────────────────────────────────────────
+  const crownColors = ['👑', '🥈', '🥉'];
+
+  function showCelebrationPage() {
+    const grid = document.getElementById('winnersGrid');
+    grid.innerHTML = '';
+
+    lastWinners.forEach((winner, i) => {
+      const card = document.createElement('div');
+      const placeClass = i === 0 ? 'place-1' : i === 1 ? 'place-2' : i === 2 ? 'place-3' : '';
+      card.className = `winner-card ${placeClass}`;
+      card.style.animationDelay = `${i * 0.15}s`;
+
+      const crownEmoji = i < 3 ? crownColors[i] : '🏆';
+      const placeText  = i === 0 ? 'الفائز الأول' : i === 1 ? 'الفائز الثاني' : i === 2 ? 'الفائز الثالث' : `الفائز ${i + 1}`;
+
+      card.innerHTML = `
+        <div class="place-badge">${placeText}</div>
+        <span class="crown">${crownEmoji}</span>
+        <div class="w-name">${winner.username}</div>
+        <div class="w-handle">@${winner.username}</div>
+      `;
+      grid.appendChild(card);
+    });
+
+    document.getElementById('celebrationPage').classList.add('visible');
+  }
+
+  function closeCelebration() {
+    document.getElementById('celebrationPage').classList.remove('visible');
+  }
+
+  // ─────────────────────────────────────────────
+  //  📸 تصدير صورة ستوري (Canvas مباشر)
+  // ─────────────────────────────────────────────
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  async function exportStoryImage() {
+    const btn = document.getElementById('exportImgBtn');
+    btn.textContent = '⏳ جاري التصدير...';
+    btn.disabled = true;
+
+    try {
+      const W = 1080, H = 1920;
+      const canvas = document.createElement('canvas');
+      canvas.width  = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      // ── خلفية متدرجة ──
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0,    '#0f0c29');
+      grad.addColorStop(0.45, '#302b63');
+      grad.addColorStop(1,    '#1a0533');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // ── نجوم عشوائية ──
+      for (let i = 0; i < 100; i++) {
+        const op = Math.random() * 0.6 + 0.1;
+        ctx.fillStyle = `rgba(255,255,255,${op})`;
+        ctx.beginPath();
+        ctx.arc(Math.random()*W, Math.random()*H, Math.random()*2.5+0.5, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // ── تاج وعناوين ──
+      ctx.textAlign  = 'center';
+      ctx.direction  = 'rtl';
+
+      ctx.font = '160px serif';
+      ctx.fillStyle = 'white';
+      ctx.fillText('🏆', W/2, 340);
+
+      ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
+      ctx.fillStyle = '#fcb045';
+      ctx.fillText('نتائج المسابقة', W/2, 480);
+
+      ctx.font = '40px "Segoe UI", Tahoma, Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.fillText('مسابقة منتجع يوم العائلة', W/2, 560);
+
+      // خط فاصل
+      ctx.strokeStyle = 'rgba(252,176,69,0.4)';
+      ctx.lineWidth   = 2;
+      ctx.beginPath();
+      ctx.moveTo(140, 610); ctx.lineTo(W-140, 610);
+      ctx.stroke();
+
+      // ── بطاقات الفائزين ──
+      const crowns      = ['👑','🥈','🥉'];
+      const places      = ['الفائز الأول','الفائز الثاني','الفائز الثالث'];
+      const bColors     = ['#fcb045','#c0c0c0','#cd7f32','#833ab4'];
+      const cardH       = 190;
+      const cardGap     = 28;
+      const cardX       = 80;
+      const cardW       = W - 160;
+      const startY      = 660;
+
+      lastWinners.forEach((w, i) => {
+        const crown  = i < 3 ? crowns[i] : '🏆';
+        const place  = i < 3 ? places[i] : `الفائز ${i+1}`;
+        const bColor = bColors[Math.min(i, 3)];
+        const cy     = startY + i * (cardH + cardGap);
+        const cx     = cardX + cardW / 2;
+
+        // خلفية البطاقة
+        ctx.fillStyle = 'rgba(255,255,255,0.07)';
+        roundRect(ctx, cardX, cy, cardW, cardH, 36);
+        ctx.fill();
+
+        // إطار البطاقة
+        ctx.strokeStyle = bColor;
+        ctx.lineWidth   = 3;
+        roundRect(ctx, cardX, cy, cardW, cardH, 36);
+        ctx.stroke();
+
+        // تاج (يسار البطاقة)
+        ctx.font      = '90px serif';
+        ctx.textAlign = 'left';
+        ctx.direction = 'ltr';
+        ctx.fillStyle = 'white';
+        ctx.fillText(crown, cardX + 36, cy + 125);
+
+        // اسم المرتبة (عربي - وسط)
+        ctx.font      = '36px "Segoe UI", Tahoma, Arial, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.45)';
+        ctx.textAlign = 'center';
+        ctx.direction = 'rtl';
+        ctx.fillText(place, cx + 40, cy + 75);
+
+        // اسم الفائز (LTR - وسط)
+        ctx.font      = 'bold 58px "Segoe UI", Tahoma, Arial, sans-serif';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.direction = 'ltr';
+        ctx.fillText('@' + w.username, cx + 40, cy + 145);
+      });
+
+      // ── التاريخ في الأسفل ──
+      const date = new Date().toLocaleDateString('ar-SA', { year:'numeric', month:'long', day:'numeric' });
+      ctx.font      = '34px "Segoe UI", Tahoma, Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.textAlign = 'center';
+      ctx.direction = 'rtl';
+      ctx.fillText(date, W/2, H - 80);
+
+      // ── تنزيل الصورة ──
+      const link = document.createElement('a');
+      link.download = `فائزو-المسابقة.png`;
+      link.href     = canvas.toDataURL('image/png');
+      link.click();
+
+    } catch(e) {
+      alert('حدث خطأ: ' + e.message);
+    }
+
+    btn.textContent = '📸 تصدير صورة ستوري';
+    btn.disabled = false;
+  }
+
+  // ─────────────────────────────────────────────
+  //  📄 تصدير PDF (احتياطي)
+  // ─────────────────────────────────────────────
+  function exportPDF() {
+    const win = window.open('', '_blank');
+    const date = new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const rowsHTML = lastWinners.map((w, i) => {
+      const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+      const crown     = i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : '🏆';
+      const placeText = i === 0 ? 'الفائز الأول' : i === 1 ? 'الفائز الثاني' : i === 2 ? 'الفائز الثالث' : `الفائز ${i + 1}`;
+      return `
+        <div class="winner-row ${rankClass}">
+          <span class="crown-icon">${crown}</span>
+          <div class="winner-info">
+            <div class="winner-place">${placeText}</div>
+            <div class="winner-name">@${w.username}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    win.document.write(`<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <title>نتائج المسابقة</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',Tahoma,sans-serif; background:white; padding:40px; direction:rtl; }
+    .header { text-align:center; margin-bottom:40px; padding-bottom:20px; border-bottom:4px solid #833ab4; }
+    .logo-text { font-size:40px; margin-bottom:10px; }
+    h1 { font-size:28px; color:#833ab4; margin-bottom:8px; }
+    .subtitle { color:#888; font-size:15px; margin-bottom:4px; }
+    .date { color:#aaa; font-size:13px; }
+    .stats-row { display:flex; justify-content:center; gap:40px; margin:24px 0; }
+    .stat-box { text-align:center; background:#f8f0ff; border-radius:12px; padding:16px 24px; }
+    .stat-num { font-size:32px; font-weight:900; color:#833ab4; }
+    .stat-label { font-size:13px; color:#888; margin-top:4px; }
+    .winners-section { margin-top:30px; }
+    .section-title { font-size:18px; font-weight:700; color:#333; margin-bottom:16px; text-align:center; }
+    .winner-row { display:flex; align-items:center; gap:16px; padding:18px 24px; border-radius:14px; margin-bottom:12px; }
+    .rank-1 { background:linear-gradient(135deg,#fff9e6,#fff3cc); border:2px solid #fcb045; }
+    .rank-2 { background:linear-gradient(135deg,#f5f5f5,#ebebeb); border:2px solid #aaa; }
+    .rank-3 { background:linear-gradient(135deg,#fdf0e8,#fae0cc); border:2px solid #cd7f32; }
+    .rank-other { background:#f8f0ff; border:2px solid #e0c8f8; }
+    .crown-icon { font-size:36px; flex-shrink:0; }
+    .winner-place { font-size:12px; color:#888; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
+    .winner-name { font-size:22px; font-weight:900; color:#1a1a2e; direction:ltr; }
+    .filter-note { background:#f0faf4; border:1px solid #b2dfdb; border-radius:10px; padding:12px 16px; font-size:13px; color:#2e7d6e; margin:20px 0; text-align:center; }
+    .footer { text-align:center; margin-top:40px; padding-top:20px; border-top:1px solid #eee; color:#bbb; font-size:12px; }
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-text">🏆</div>
+    <h1>مسابقة منتجع يوم العائلة</h1>
+    <div class="subtitle">نتائج السحب الرسمي</div>
+    <div class="date">${date}</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num">${document.getElementById('totalCommentCount').textContent}</div>
+      <div class="stat-label">إجمالي التعليقات</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">${participants.length}</div>
+      <div class="stat-label">مشارك بعد التصفية</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">${lastWinners.length}</div>
+      <div class="stat-label">فائز</div>
+    </div>
+  </div>
+
+  <div class="filter-note">
+    ✅ تمت تصفية التعليقات المكررة تلقائياً — كل مشارك دخل السحب مرة واحدة فقط بغض النظر عن عدد تعليقاته
+  </div>
+
+  <div class="winners-section">
+    <div class="section-title">🎉 الفائزون</div>
+    ${rowsHTML}
+  </div>
+
+  <div class="footer">تم إجراء السحب بشكل عشوائي وشفاف — ${date}</div>
+
+  <script>window.onload = function(){ window.print(); }<\/script>
+</body>
+</html>`);
+    win.document.close();
+  }
+
+  // ─────────────────────────────────────────────
+  //  UI Helpers
+  // ─────────────────────────────────────────────
+  function showStats(totalComments) {
+    document.getElementById('participantCount').textContent    = participants.length;
+    document.getElementById('totalCommentCount').textContent   = totalComments;
+    document.getElementById('stats').classList.add('visible');
+  }
+
+  function showParticipants() {
+    const container = document.getElementById('participantsItems');
+    container.innerHTML = '';
+    participants.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'participant-item';
+      div.innerHTML = `<div class="avatar">${p.username.substring(0,2).toUpperCase()}</div><span>@${p.username}</span>`;
+      container.appendChild(div);
+    });
+
+    const countContainer = document.getElementById('commentsCountItems');
+    countContainer.innerHTML = '';
+    Object.values(commentCounts).sort((a, b) => b.count - a.count).forEach((p, i) => {
+      const div = document.createElement('div');
+      div.className = 'count-row';
+      div.innerHTML = `
+        <span class="rank">${i + 1}</span>
+        <div class="name-part">
+          <div class="avatar">${p.username.substring(0,2).toUpperCase()}</div>
+          <span>@${p.username}</span>
+        </div>
+        <span class="count-badge">${p.count} تعليق</span>`;
+      countContainer.appendChild(div);
+    });
+
+    document.getElementById('participantsList').classList.add('visible');
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tab1').classList.toggle('active', tab === 1);
+    document.getElementById('tab2').classList.toggle('active', tab === 2);
+    document.getElementById('participantsItems').style.display  = tab === 1 ? 'block' : 'none';
+    document.getElementById('commentsCountItems').style.display = tab === 2 ? 'block' : 'none';
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = `status visible ${type}`;
+  }
+
+  // ─────────────────────────────────────────────
+  //  Confetti
+  // ─────────────────────────────────────────────
+  function launchConfetti() {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#833ab4','#fd1d1d','#fcb045','#4fc3f7','#a5d6a7','#fff176'];
+    for (let i = 0; i < 150; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left              = Math.random() * 100 + 'vw';
+      piece.style.background        = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width             = (Math.random() * 10 + 6) + 'px';
+      piece.style.height            = (Math.random() * 10 + 6) + 'px';
+      piece.style.borderRadius      = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      piece.style.animationDelay    = (Math.random() * 1.5) + 's';
+      container.appendChild(piece);
+      piece.addEventListener('animationend', () => piece.remove());
+    }
+  }
+</script>
+</body>
+</html>
