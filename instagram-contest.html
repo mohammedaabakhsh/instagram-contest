@@ -606,6 +606,89 @@
     }
 
     /* ══════════════════════════════════════════
+       📱 Responsive — الجوال
+    ══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+
+      body { padding: 12px; align-items: flex-start; }
+
+      .container {
+        padding: 24px 18px;
+        border-radius: 20px;
+      }
+
+      .logo svg { width: 48px; height: 48px; }
+
+      h1 { font-size: 20px; margin-bottom: 20px; }
+
+      /* Post ID row — يصير عمودين في الجوال */
+      .post-id-row { flex-direction: column; gap: 8px; }
+      .post-id-row input { width: 100%; }
+      .btn-browse { width: 100%; text-align: center; }
+
+      /* شرط المشاركة — عمودي */
+      .form-group div[style*="display:flex"] {
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+
+      .btn { font-size: 15px; padding: 13px; }
+      .btn-draw { font-size: 16px; padding: 15px; }
+
+      /* الإحصائيات */
+      .stats { padding: 16px 12px; }
+      .stats-number { font-size: 36px; }
+      .stats > div { gap: 20px !important; }
+
+      /* عدد الفائزين */
+      .winner-count-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+      .winner-count-row input[type="number"] { width: 70px; }
+
+      /* قائمة المشاركين */
+      .participants { max-height: 180px; padding: 10px; }
+      .tab { font-size: 12px; padding: 7px; }
+
+      /* الصفحة الاحتفالية */
+      .celebration-page { padding: 24px 14px; }
+      .celebration-title { font-size: 24px; }
+
+      .winners-grid { gap: 14px; }
+      .winner-card { padding: 24px 18px; min-width: unset; max-width: 100%; flex: unset; width: 100%; }
+      .winner-card .crown { font-size: 38px; }
+      .winner-card .w-name { font-size: 18px; }
+
+      .celebration-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 0 4px;
+      }
+
+      .btn-celebration { padding: 13px 16px; font-size: 14px; text-align: center; }
+
+      /* المودال */
+      .modal { border-radius: 16px; max-height: 90vh; }
+      .modal-header { padding: 14px 16px; }
+      .posts-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+      .modal-footer { padding: 12px 16px; }
+
+      /* drum roll */
+      .drum-roll { padding: 20px 14px; }
+      .rolling-name { font-size: 20px; }
+    }
+
+    /* شاشات متوسطة */
+    @media (max-width: 360px) {
+      h1 { font-size: 17px; }
+      .container { padding: 18px 14px; }
+      .posts-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ══════════════════════════════════════════
        🖨️ PDF Print Styles
     ══════════════════════════════════════════ */
     @media print {
