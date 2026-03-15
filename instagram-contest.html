@@ -10,7 +10,7 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe, #a8d8d8);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       align-items: center;
@@ -33,7 +33,7 @@
     h1 {
       text-align: center;
       font-size: 28px;
-      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -62,14 +62,14 @@
     }
 
     input[type="text"] { direction: ltr; font-family: monospace; }
-    input:focus { border-color: #833ab4; }
+    input:focus { border-color: #3bbfbe; }
 
     .post-id-row { display: flex; gap: 8px; align-items: stretch; }
     .post-id-row input { flex: 1; margin: 0; }
 
     .btn-browse {
       padding: 12px 16px;
-      background: linear-gradient(135deg, #833ab4, #c13584);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       color: white;
       border: none;
       border-radius: 12px;
@@ -99,19 +99,19 @@
     .btn:active:not(:disabled) { transform: translateY(0); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .btn-fetch { background: linear-gradient(135deg, #833ab4, #c13584); color: white; margin-bottom: 8px; }
-    .btn-draw  { background: linear-gradient(135deg, #fd1d1d, #fcb045); color: white; font-size: 18px; padding: 18px; letter-spacing: 1px; }
+    .btn-fetch { background: linear-gradient(135deg, #3bbfbe, #0d6e6e); color: white; margin-bottom: 8px; }
+    .btn-draw  { background: linear-gradient(135deg, #0d6e6e, #3bbfbe); color: white; font-size: 18px; padding: 18px; letter-spacing: 1px; }
 
     /* Winner count row */
     .winner-count-row {
       display: none;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(135deg, #f8f0ff, #fff5f5);
+      background: linear-gradient(135deg, #e8f8f8, #f0fafa);
       border-radius: 14px;
       padding: 14px 18px;
       margin-top: 12px;
-      border: 2px solid #e8d5f8;
+      border: 2px solid #b2e0e0;
     }
 
     .winner-count-row.visible { display: flex; }
@@ -166,12 +166,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: linear-gradient(135deg, #f8f0ff, #fff5f5);
+      background: linear-gradient(135deg, #e8f8f8, #f0fafa);
     }
 
     .modal-header h2 {
       font-size: 18px;
-      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -189,7 +189,7 @@
       transition: background 0.2s;
     }
 
-    .modal-close:hover { background: #f0e8ff; color: #833ab4; }
+    .modal-close:hover { background: #f0e8ff; color: #3bbfbe; }
     .modal-body { overflow-y: auto; padding: 16px; flex: 1; }
 
     .modal-status { text-align: center; padding: 40px 20px; color: #aaa; font-size: 14px; }
@@ -205,8 +205,8 @@
       background: #fafafa;
     }
 
-    .post-card:hover { border-color: #833ab4; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(131,58,180,0.2); }
-    .post-card.selected { border-color: #833ab4; box-shadow: 0 0 0 3px rgba(131,58,180,0.3); }
+    .post-card:hover { border-color: #3bbfbe; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(131,58,180,0.2); }
+    .post-card.selected { border-color: #3bbfbe; box-shadow: 0 0 0 3px rgba(131,58,180,0.3); }
 
     .post-thumb {
       width: 100%;
@@ -243,7 +243,7 @@
       padding: 2px 6px;
       border-radius: 6px;
       background: #f0e8ff;
-      color: #833ab4;
+      color: #3bbfbe;
       font-weight: 600;
       margin-top: 4px;
     }
@@ -253,7 +253,7 @@
     .btn-select {
       flex: 1;
       padding: 12px;
-      background: linear-gradient(135deg, #833ab4, #c13584);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       color: white;
       border: none;
       border-radius: 12px;
@@ -283,12 +283,12 @@
     /* Stats */
     .stats {
       display: none;
-      background: linear-gradient(135deg, #f8f0ff, #fff5f5);
+      background: linear-gradient(135deg, #e8f8f8, #f0fafa);
       border-radius: 16px;
       padding: 20px;
       margin: 20px 0;
       text-align: center;
-      border: 2px solid #e8d5f8;
+      border: 2px solid #b2e0e0;
     }
 
     .stats.visible { display: block; }
@@ -296,7 +296,7 @@
     .stats-number {
       font-size: 48px;
       font-weight: 900;
-      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -335,7 +335,7 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -360,7 +360,7 @@
     .rolling-name {
       font-size: 26px;
       font-weight: 900;
-      color: #fcb045;
+      color: #3bbfbe;
       letter-spacing: 2px;
       animation: flicker 0.1s infinite;
       min-height: 40px;
@@ -408,7 +408,7 @@
       transition: all 0.2s;
     }
 
-    .tab.active { border-color: #833ab4; background: linear-gradient(135deg, #f8f0ff, #fff5f5); color: #833ab4; }
+    .tab.active { border-color: #3bbfbe; background: linear-gradient(135deg, #e8fafa, #f0fefe); color: #3bbfbe; }
 
     .count-row {
       display: flex;
@@ -427,7 +427,7 @@
     .count-row .name-part { display: flex; align-items: center; gap: 8px; flex: 1; }
 
     .count-badge {
-      background: linear-gradient(135deg, #833ab4, #fd1d1d);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       color: white;
       font-size: 11px;
       font-weight: 700;
@@ -459,7 +459,7 @@
       position: fixed;
       inset: 0;
       z-index: 20000;
-      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #1a0533 100%);
+      background: linear-gradient(135deg, #032e2e 0%, #0d6e6e 50%, #0a4a4a 100%);
       overflow-y: auto;
       padding: 40px 20px;
     }
@@ -485,7 +485,7 @@
     .celebration-title {
       font-size: 36px;
       font-weight: 900;
-      background: linear-gradient(135deg, #fcb045, #fd1d1d, #833ab4);
+      background: linear-gradient(135deg, #3bbfbe, #a8d8d8, #0d6e6e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -525,7 +525,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(131,58,180,0.15), rgba(253,29,29,0.1));
+      background: linear-gradient(135deg, rgba(59,191,190,0.15), rgba(13,110,110,0.1));
       pointer-events: none;
     }
 
@@ -557,8 +557,8 @@
     .winner-card .w-handle { color: rgba(255,255,255,0.45); font-size: 14px; direction: ltr; }
 
     @keyframes glow {
-      from { text-shadow: 0 0 10px rgba(252,176,69,0.4); }
-      to   { text-shadow: 0 0 30px rgba(252,176,69,0.9), 0 0 50px rgba(253,29,29,0.4); }
+      from { text-shadow: 0 0 10px rgba(59,191,190,0.4); }
+      to   { text-shadow: 0 0 30px rgba(59,191,190,0.9), 0 0 50px rgba(13,110,110,0.6); }
     }
 
     /* تلوين أول 3 فائزين */
@@ -601,7 +601,7 @@
     }
 
     .btn-draw-again {
-      background: linear-gradient(135deg, #fd1d1d, #fcb045);
+      background: linear-gradient(135deg, #0d6e6e, #3bbfbe);
       color: white;
     }
 
@@ -704,8 +704,8 @@
         padding: 40px;
       }
 
-      .pdf-header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #833ab4; padding-bottom: 20px; }
-      .pdf-header h1 { font-size: 28px; color: #833ab4; margin-bottom: 8px; }
+      .pdf-header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #3bbfbe; padding-bottom: 20px; }
+      .pdf-header h1 { font-size: 28px; color: #3bbfbe; margin-bottom: 8px; }
       .pdf-header .pdf-date { color: #888; font-size: 14px; }
 
       .pdf-winner-row {
@@ -720,7 +720,7 @@
       .pdf-winner-row.rank-1 { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 2px solid #fcb045; }
       .pdf-winner-row.rank-2 { background: linear-gradient(135deg, #f5f5f5, #ebebeb); border: 2px solid #aaa; }
       .pdf-winner-row.rank-3 { background: linear-gradient(135deg, #fdf0e8, #fae0cc); border: 2px solid #cd7f32; }
-      .pdf-winner-row.rank-other { background: #f8f0ff; border: 2px solid #e0c8f8; }
+      .pdf-winner-row.rank-other { background: #f0fafa; border: 2px solid #b2e0e0; }
     }
   </style>
 </head>
@@ -735,7 +735,7 @@
   top: 0;
   width: 400px;
   height: 711px;
-  background: linear-gradient(160deg, #0f0c29 0%, #302b63 45%, #1a0533 100%);
+  background: linear-gradient(160deg, #032e2e 0%, #0d6e6e 45%, #0a4a4a 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -751,7 +751,7 @@
   <!-- شعار وعنوان -->
   <div style="text-align:center; margin-bottom:28px; z-index:1;">
     <div style="font-size:48px; margin-bottom:8px;">🏆</div>
-    <div style="font-size:20px; font-weight:900; color:#fcb045; letter-spacing:1px; margin-bottom:4px;">
+    <div style="font-size:20px; font-weight:900; color:#3bbfbe; letter-spacing:1px; margin-bottom:4px;">
       🎊 نتائج المسابقة 🎊
     </div>
     <div id="storyContestName" style="font-size:14px; color:rgba(255,255,255,0.55);">
@@ -806,19 +806,7 @@
 <div class="container">
 
   <div class="logo">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color:#fcb045"/>
-          <stop offset="50%" style="stop-color:#fd1d1d"/>
-          <stop offset="100%" style="stop-color:#833ab4"/>
-        </linearGradient>
-      </defs>
-      <rect width="100" height="100" rx="22" fill="url(#ig)"/>
-      <rect x="20" y="20" width="60" height="60" rx="14" fill="none" stroke="white" stroke-width="6"/>
-      <circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="6"/>
-      <circle cx="71" cy="29" r="4" fill="white"/>
-    </svg>
+    <img src="logo.jpg" alt="Family Day Resort" style="width:110px; height:110px; border-radius:50%; object-fit:cover; box-shadow:0 4px 20px rgba(59,191,190,0.3);" />
   </div>
 
   <h1>مسابقة منتجع يوم العائلة</h1>
@@ -848,9 +836,9 @@
   </div>
 
   <!-- قوانين السحب -->
-  <div style="background:#f8f0ff; border-radius:14px; padding:14px 18px; margin-top:12px;
-              border-right:4px solid #833ab4; font-size:13px; color:#555; line-height:1.9;">
-    <div style="font-weight:700; color:#833ab4; margin-bottom:6px;">📋 قوانين السحب</div>
+  <div style="background:#e8fafa; border-radius:14px; padding:14px 18px; margin-top:12px;
+              border-right:4px solid #3bbfbe; font-size:13px; color:#555; line-height:1.9;">
+    <div style="font-weight:700; color:#3bbfbe; margin-bottom:6px;">📋 قوانين السحب</div>
     <div>• كل مشارك يدخل السحب <strong>مرة واحدة فقط</strong> بغض النظر عن عدد تعليقاته</div>
     <div>• التعليقات المكررة من نفس الشخص لا تُحتسب — يتم تصفيتها تلقائياً</div>
     <div>• السحب يتم بشكل عشوائي وشفاف من بين المشاركين المؤهلين</div>
@@ -1267,9 +1255,9 @@
 
       // ── خلفية متدرجة ──
       const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0,    '#0f0c29');
-      grad.addColorStop(0.45, '#302b63');
-      grad.addColorStop(1,    '#1a0533');
+      grad.addColorStop(0,    '#032e2e');
+      grad.addColorStop(0.45, '#0d6e6e');
+      grad.addColorStop(1,    '#0a4a4a');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
@@ -1291,7 +1279,7 @@
       ctx.fillText('🏆', W/2, 340);
 
       ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
-      ctx.fillStyle = '#fcb045';
+      ctx.fillStyle = '#3bbfbe';
       ctx.fillText('نتائج المسابقة', W/2, 480);
 
       ctx.font = '40px "Segoe UI", Tahoma, Arial, sans-serif';
@@ -1299,7 +1287,7 @@
       ctx.fillText('مسابقة منتجع يوم العائلة', W/2, 560);
 
       // خط فاصل
-      ctx.strokeStyle = 'rgba(252,176,69,0.4)';
+      ctx.strokeStyle = 'rgba(59,191,190,0.4)';
       ctx.lineWidth   = 2;
       ctx.beginPath();
       ctx.moveTo(140, 610); ctx.lineTo(W-140, 610);
@@ -1308,7 +1296,7 @@
       // ── بطاقات الفائزين ──
       const crowns      = ['👑','🥈','🥉'];
       const places      = ['الفائز الأول','الفائز الثاني','الفائز الثالث'];
-      const bColors     = ['#fcb045','#c0c0c0','#cd7f32','#833ab4'];
+      const bColors     = ['#fcb045','#c0c0c0','#cd7f32','#3bbfbe'];
       const cardH       = 190;
       const cardGap     = 28;
       const cardX       = 80;
@@ -1406,14 +1394,14 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:'Segoe UI',Tahoma,sans-serif; background:white; padding:40px; direction:rtl; }
-    .header { text-align:center; margin-bottom:40px; padding-bottom:20px; border-bottom:4px solid #833ab4; }
+    .header { text-align:center; margin-bottom:40px; padding-bottom:20px; border-bottom:4px solid #3bbfbe; }
     .logo-text { font-size:40px; margin-bottom:10px; }
-    h1 { font-size:28px; color:#833ab4; margin-bottom:8px; }
+    h1 { font-size:28px; color:#3bbfbe; margin-bottom:8px; }
     .subtitle { color:#888; font-size:15px; margin-bottom:4px; }
     .date { color:#aaa; font-size:13px; }
     .stats-row { display:flex; justify-content:center; gap:40px; margin:24px 0; }
-    .stat-box { text-align:center; background:#f8f0ff; border-radius:12px; padding:16px 24px; }
-    .stat-num { font-size:32px; font-weight:900; color:#833ab4; }
+    .stat-box { text-align:center; background:#f0fafa; border-radius:12px; padding:16px 24px; }
+    .stat-num { font-size:32px; font-weight:900; color:#3bbfbe; }
     .stat-label { font-size:13px; color:#888; margin-top:4px; }
     .winners-section { margin-top:30px; }
     .section-title { font-size:18px; font-weight:700; color:#333; margin-bottom:16px; text-align:center; }
@@ -1421,7 +1409,7 @@
     .rank-1 { background:linear-gradient(135deg,#fff9e6,#fff3cc); border:2px solid #fcb045; }
     .rank-2 { background:linear-gradient(135deg,#f5f5f5,#ebebeb); border:2px solid #aaa; }
     .rank-3 { background:linear-gradient(135deg,#fdf0e8,#fae0cc); border:2px solid #cd7f32; }
-    .rank-other { background:#f8f0ff; border:2px solid #e0c8f8; }
+    .rank-other { background:#f0fafa; border:2px solid #b2e0e0; }
     .crown-icon { font-size:36px; flex-shrink:0; }
     .winner-place { font-size:12px; color:#888; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
     .winner-name { font-size:22px; font-weight:900; color:#1a1a2e; direction:ltr; }
@@ -1526,7 +1514,7 @@
   // ─────────────────────────────────────────────
   function launchConfetti() {
     const container = document.getElementById('confettiContainer');
-    const colors = ['#833ab4','#fd1d1d','#fcb045','#4fc3f7','#a5d6a7','#fff176'];
+    const colors = ['#3bbfbe','#fd1d1d','#fcb045','#4fc3f7','#a5d6a7','#fff176'];
     for (let i = 0; i < 150; i++) {
       const piece = document.createElement('div');
       piece.className = 'confetti-piece';
