@@ -844,7 +844,7 @@
   </div>
 
   <button class="btn btn-fetch" id="fetchBtn" onclick="fetchComments()">
-    جلب التعليقات
+    اظهر التعليقات
   </button>
 
   <div class="status" id="statusMsg"></div>
@@ -1067,7 +1067,7 @@
       showStatus(`خطأ: ${err.message}`, 'error');
     } finally {
       btn.disabled = false;
-      btn.innerHTML = 'جلب التعليقات';
+      btn.innerHTML = 'اظهر التعليقات';
     }
   }
 
