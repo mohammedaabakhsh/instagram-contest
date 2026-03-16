@@ -1277,13 +1277,22 @@
         ctx.fill();
       }
 
-      // ── تاج وعناوين ──
+      // ── لوقو وعناوين ──
       ctx.textAlign  = 'center';
       ctx.direction  = 'rtl';
 
-      ctx.font = '160px serif';
-      ctx.fillStyle = 'white';
-      ctx.fillText('🏆', W/2, 340);
+      // رسم اللوقو
+      await new Promise((resolve) => {
+        const logo = new Image();
+        logo.onload = () => {
+          const logoW = 420;
+          const logoH = logo.naturalHeight * (logoW / logo.naturalWidth);
+          ctx.drawImage(logo, W/2 - logoW/2, 120, logoW, logoH);
+          resolve();
+        };
+        logo.onerror = resolve;
+        logo.src = 'Logo.png';
+      });
 
       ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
       ctx.fillStyle = '#3bbfbe';
@@ -1301,7 +1310,6 @@
       ctx.stroke();
 
       // ── بطاقات الفائزين ──
-      const crowns      = ['👑','🥈','🥉'];
       const places      = ['الفائز الأول','الفائز الثاني','الفائز الثالث'];
       const bColors     = ['#fcb045','#c0c0c0','#cd7f32','#3bbfbe'];
       const cardH       = 190;
@@ -1311,11 +1319,11 @@
       const startY      = 660;
 
       lastWinners.forEach((w, i) => {
-        const crown  = i < 3 ? crowns[i] : '🏆';
-        const place  = i < 3 ? places[i] : `الفائز ${i+1}`;
-        const bColor = bColors[Math.min(i, 3)];
-        const cy     = startY + i * (cardH + cardGap);
-        const cx     = cardX + cardW / 2;
+        const placeNum = String(i + 1);
+        const place    = i < 3 ? places[i] : `الفائز ${i+1}`;
+        const bColor   = bColors[Math.min(i, 3)];
+        const cy       = startY + i * (cardH + cardGap);
+        const cx       = cardX + cardW / 2;
 
         // خلفية البطاقة
         ctx.fillStyle = 'rgba(255,255,255,0.07)';
@@ -1328,12 +1336,12 @@
         roundRect(ctx, cardX, cy, cardW, cardH, 36);
         ctx.stroke();
 
-        // تاج (يسار البطاقة)
-        ctx.font      = '90px serif';
+        // رقم (يسار البطاقة)
+        ctx.font      = 'bold 90px "Segoe UI", Tahoma, Arial, sans-serif';
         ctx.textAlign = 'left';
         ctx.direction = 'ltr';
-        ctx.fillStyle = 'white';
-        ctx.fillText(crown, cardX + 36, cy + 125);
+        ctx.fillStyle = bColor;
+        ctx.fillText(placeNum, cardX + 36, cy + 125);
 
         // اسم المرتبة (عربي - وسط)
         ctx.font      = '36px "Segoe UI", Tahoma, Arial, sans-serif';
