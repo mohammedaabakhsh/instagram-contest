@@ -1041,7 +1041,7 @@
 
     const btn = document.getElementById('fetchBtn');
     btn.disabled = true;
-    btn.innerHTML = 'جاري الجلب... <span class="spinner"></span>';
+    btn.innerHTML = 'جاري ظهور الاسماء... <span class="spinner"></span>';
 
     participants  = [];
     commentCounts = {};
@@ -1107,7 +1107,7 @@
 
     let url = `${base}/${postId}/comments?fields=${fields}&limit=100&access_token=${enc}`;
     while (url) {
-      showStatus(`جاري الجلب... ${totalComments} تعليق حتى الآن`, 'info');
+      showStatus(`جاري ظهور الاسماء... ${totalComments} تعليق حتى الآن`, 'info');
       const res  = await fetch(url);
       const data = await res.json();
       if (data.error) throw new Error(data.error.message);
