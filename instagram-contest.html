@@ -1291,7 +1291,8 @@
           resolve();
         };
         logo.onerror = resolve;
-        logo.src = 'Logo.png';
+        logo.crossOrigin = 'anonymous';
+        logo.src = 'Logo.png?v=' + Date.now();
       });
 
       ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
