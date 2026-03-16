@@ -1282,18 +1282,22 @@
       ctx.direction  = 'rtl';
 
       // رسم اللوقو
-      await new Promise((resolve) => {
-        const logo = new Image();
-        logo.onload = () => {
-          const logoW = 420;
-          const logoH = logo.naturalHeight * (logoW / logo.naturalWidth);
-          ctx.drawImage(logo, W/2 - logoW/2, 120, logoW, logoH);
-          resolve();
-        };
-        logo.onerror = resolve;
-        logo.crossOrigin = 'anonymous';
-        logo.src = 'Logo.png?v=' + Date.now();
-      });
+      try {
+        const res     = await fetch('Logo.png');
+        const blob    = await res.blob();
+        const dataUrl = await new Promise(r => { const fr = new FileReader(); fr.onload = e => r(e.target.result); fr.readAsDataURL(blob); });
+        await new Promise((resolve) => {
+          const logo = new Image();
+          logo.onload = () => {
+            const logoW = 420;
+            const logoH = logo.naturalHeight * (logoW / logo.naturalWidth);
+            ctx.drawImage(logo, W/2 - logoW/2, 120, logoW, logoH);
+            resolve();
+          };
+          logo.onerror = resolve;
+          logo.src = dataUrl;
+        });
+      } catch(e) { /* لو فشل اللوقو يكمل بدونه */ }
 
       ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
       ctx.fillStyle = '#3bbfbe';
@@ -1341,7 +1345,7 @@
         ctx.font      = 'bold 90px "Segoe UI", Tahoma, Arial, sans-serif';
         ctx.textAlign = 'left';
         ctx.direction = 'ltr';
-        ctx.fillStyle = bColor;
+        ctx.fillStyle = 'white';
         ctx.fillText(placeNum, cardX + 36, cy + 125);
 
         // اسم المرتبة (عربي - وسط)
