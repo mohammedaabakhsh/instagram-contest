@@ -1295,28 +1295,17 @@
       ctx.textAlign  = 'center';
       ctx.direction  = 'rtl';
 
-      // رسم اللوقو
-      if (logoDataUrl) {
-        await new Promise((resolve) => {
-          const logo = new Image();
-          logo.onload = () => {
-            const logoW = 420;
-            const logoH = logo.naturalHeight * (logoW / logo.naturalWidth);
-            ctx.drawImage(logo, W/2 - logoW/2, 80, logoW, logoH);
-            resolve();
-          };
-          logo.onerror = resolve;
-          logo.src = logoDataUrl;
-        });
-      }
+      ctx.font = 'bold 60px "Segoe UI", Tahoma, Arial, sans-serif';
+      ctx.fillStyle = 'white';
+      ctx.fillText('منتجع يوم العائلة', W/2, 340);
 
       ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
       ctx.fillStyle = '#3bbfbe';
-      ctx.fillText('نتائج المسابقة', W/2, 480);
+      ctx.fillText('نتائج المسابقة', W/2, 450);
 
       ctx.font = '40px "Segoe UI", Tahoma, Arial, sans-serif';
       ctx.fillStyle = 'rgba(255,255,255,0.5)';
-      ctx.fillText('مسابقة منتجع يوم العائلة', W/2, 560);
+      ctx.fillText('مسابقة منتجع يوم العائلة', W/2, 530);
 
       // خط فاصل
       ctx.strokeStyle = 'rgba(59,191,190,0.4)';
