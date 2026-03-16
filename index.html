@@ -853,7 +853,7 @@
     <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap;">
       <div>
         <div class="stats-number" id="participantCount">0</div>
-        <div class="stats-label">مشارك فريد 👤</div>
+        <div class="stats-label">مشارك (بدون تكرار) 👤</div>
       </div>
       <div>
         <div class="stats-number" id="totalCommentCount">0</div>
@@ -1058,7 +1058,7 @@
       } else {
         const minM = parseInt(document.querySelector('input[name="mentionCondition"]:checked').value) || 0;
         const conditionText = minM > 0 ? ` (منشن ${minM} أشخاص أو أكثر)` : '';
-        showStatus(`✅ تم جلب ${totalComments} تعليق — ${participants.length} مشارك فريد${conditionText}`, 'success');
+        showStatus(`✅ تم جلب ${totalComments} تعليق — ${participants.length} مشارك (بدون تكرار)${conditionText}`, 'success');
         document.getElementById('divider').style.display  = 'block';
         document.getElementById('drawBtn').style.display  = 'block';
         document.getElementById('winnerCountRow').classList.add('visible');
