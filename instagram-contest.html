@@ -539,10 +539,16 @@
       margin-bottom: 12px;
     }
 
-    .winner-card .crown { font-size: 52px; margin-bottom: 10px; display: block; }
-    .winner-card.place-1 .crown { animation: bounce 0.6s ease infinite alternate; }
-    .winner-card.place-2 .crown { animation: bounce 0.6s ease 0.1s infinite alternate; }
-    .winner-card.place-3 .crown { animation: bounce 0.6s ease 0.2s infinite alternate; }
+    .winner-card .crown { font-size: 52px; margin-bottom: 10px; display: block; animation: bounce 0.6s ease infinite alternate; }
+    .winner-card:nth-child(2) .crown { animation-delay: 0.1s; }
+    .winner-card:nth-child(3) .crown { animation-delay: 0.2s; }
+    .winner-card:nth-child(4) .crown { animation-delay: 0.3s; }
+    .winner-card:nth-child(5) .crown { animation-delay: 0.4s; }
+    .winner-card:nth-child(6) .crown { animation-delay: 0.5s; }
+    .winner-card:nth-child(7) .crown { animation-delay: 0.6s; }
+    .winner-card:nth-child(8) .crown { animation-delay: 0.7s; }
+    .winner-card:nth-child(9) .crown { animation-delay: 0.8s; }
+    .winner-card:nth-child(10) .crown { animation-delay: 0.9s; }
 
     @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
 
