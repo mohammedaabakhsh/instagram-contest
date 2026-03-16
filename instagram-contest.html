@@ -772,7 +772,10 @@
 <!-- ══════════════ 🎉 صفحة الفائزين الاحتفالية ══════════════ -->
 <div class="celebration-page" id="celebrationPage">
   <div class="celebration-header">
-    <div class="celebration-title">🎊 نتائج المسابقة 🎊</div>
+    <div class="logo" style="margin-bottom:10px;">
+      <img src="Logo.png" alt="Family Day Resort" style="width:200px; height:auto;" />
+    </div>
+    <div class="celebration-title">نتائج المسابقة</div>
     <div class="celebration-subtitle" id="celebrationSubtitle">مسابقة منتجع يوم العائلة</div>
   </div>
 
@@ -1193,8 +1196,6 @@
   // ─────────────────────────────────────────────
   //  🎉 صفحة الفائزين الاحتفالية
   // ─────────────────────────────────────────────
-  const crownColors = ['👑', '🥈', '🥉'];
-
   function showCelebrationPage() {
     const grid = document.getElementById('winnersGrid');
     grid.innerHTML = '';
@@ -1205,12 +1206,12 @@
       card.className = `winner-card ${placeClass}`;
       card.style.animationDelay = `${i * 0.15}s`;
 
-      const crownEmoji = i < 3 ? crownColors[i] : '🏆';
+      const placeNumber = i + 1;
       const placeText  = i === 0 ? 'الفائز الأول' : i === 1 ? 'الفائز الثاني' : i === 2 ? 'الفائز الثالث' : `الفائز ${i + 1}`;
 
       card.innerHTML = `
         <div class="place-badge">${placeText}</div>
-        <span class="crown">${crownEmoji}</span>
+        <span class="crown">${placeNumber}</span>
         <div class="w-name">${winner.username}</div>
         <div class="w-handle">@${winner.username}</div>
       `;
