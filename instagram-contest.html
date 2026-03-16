@@ -915,6 +915,20 @@
   let selectedPostId = null;
   let allPosts       = [];
   let lastWinners    = [];
+  let logoDataUrl    = null;
+
+  // تحميل اللوقو مسبقاً عند فتح الصفحة
+  (async () => {
+    try {
+      const res  = await fetch('Logo.png');
+      const blob = await res.blob();
+      logoDataUrl = await new Promise(r => {
+        const fr = new FileReader();
+        fr.onload = e => r(e.target.result);
+        fr.readAsDataURL(blob);
+      });
+    } catch(e) {}
+  })();
 
   // ─────────────────────────────────────────────
   //  Posts Picker
@@ -1282,22 +1296,19 @@
       ctx.direction  = 'rtl';
 
       // رسم اللوقو
-      try {
-        const res     = await fetch('Logo.png');
-        const blob    = await res.blob();
-        const dataUrl = await new Promise(r => { const fr = new FileReader(); fr.onload = e => r(e.target.result); fr.readAsDataURL(blob); });
+      if (logoDataUrl) {
         await new Promise((resolve) => {
           const logo = new Image();
           logo.onload = () => {
             const logoW = 420;
             const logoH = logo.naturalHeight * (logoW / logo.naturalWidth);
-            ctx.drawImage(logo, W/2 - logoW/2, 120, logoW, logoH);
+            ctx.drawImage(logo, W/2 - logoW/2, 80, logoW, logoH);
             resolve();
           };
           logo.onerror = resolve;
-          logo.src = dataUrl;
+          logo.src = logoDataUrl;
         });
-      } catch(e) { /* لو فشل اللوقو يكمل بدونه */ }
+      }
 
       ctx.font = 'bold 72px "Segoe UI", Tahoma, Arial, sans-serif';
       ctx.fillStyle = '#3bbfbe';
@@ -1316,7 +1327,7 @@
 
       // ── بطاقات الفائزين ──
       const places      = ['الفائز الأول','الفائز الثاني','الفائز الثالث'];
-      const bColors     = ['#fcb045','#c0c0c0','#cd7f32','#3bbfbe'];
+      const bColors     = ['rgba(255,255,255,0.8)','rgba(255,255,255,0.8)','rgba(255,255,255,0.8)','rgba(255,255,255,0.8)'];
       const cardH       = 190;
       const cardGap     = 28;
       const cardX       = 80;
